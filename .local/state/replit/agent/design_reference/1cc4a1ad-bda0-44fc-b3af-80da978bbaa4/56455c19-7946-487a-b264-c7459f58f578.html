@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopCompare - Compare Products Across All Platforms</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-blue': '#2563EB',
+                        'brand-blue-dark': '#1E40AF',
+                    }
+                }
+            },
+            darkMode: 'class'
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- @COMPONENT: Header [Navigation and theme toggle] -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-balance-scale text-2xl text-brand-blue"></i>
+                    <h1 class="text-2xl font-bold text-brand-blue">ShopCompare</h1>
+                </div>
+                
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                    <i class="fas fa-moon dark:hidden text-gray-600"></i>
+                    <i class="fas fa-sun hidden dark:inline text-yellow-400"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: SearchSection [Search bar and filters] -->
+    <section class="bg-white dark:bg-slate-800 py-8 border-b border-gray-200 dark:border-slate-700">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-2">Compare Products Across All Platforms</h2>
+                <p class="text-gray-600 dark:text-gray-400 text-center mb-8">Find the best deals on Amazon, Flipkart, Myntra, and Meesho</p>
+                
+                <!-- Search Bar -->
+                <div class="relative mb-6">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                    <input type="text" id="searchInput" placeholder="Search for products..." class="w-full pl-10 pr-4 py-4 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 text-lg" data-mock="true">
+                    <button class="absolute right-2 top-2 bg-brand-blue hover:bg-brand-blue-dark text-white px-6 py-2 rounded-lg transition-colors font-medium">
+                        Search
+                    </button>
+                </div>
+
+                <!-- Platform Filters -->
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <button class="platform-filter active bg-brand-blue text-white px-4 py-2 rounded-full font-medium transition-colors" data-platform="all">
+                        All Platforms
+                    </button>
+                    <button class="platform-filter bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-600 px-4 py-2 rounded-full font-medium transition-colors" data-platform="amazon">
+                        <i class="fab fa-amazon text-orange-500 mr-2"></i>Amazon
+                    </button>
+                    <button class="platform-filter bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-600 px-4 py-2 rounded-full font-medium transition-colors" data-platform="flipkart">
+                        <i class="fas fa-shopping-cart text-blue-500 mr-2"></i>Flipkart
+                    </button>
+                    <button class="platform-filter bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-600 px-4 py-2 rounded-full font-medium transition-colors" data-platform="myntra">
+                        <i class="fas fa-tshirt text-pink-500 mr-2"></i>Myntra
+                    </button>
+                    <button class="platform-filter bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-600 px-4 py-2 rounded-full font-medium transition-colors" data-platform="meesho">
+                        <i class="fas fa-store text-green-500 mr-2"></i>Meesho
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: SearchSection -->
+
+    <!-- @COMPONENT: ProductGrid [Product comparison cards] -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h3 class="text-xl font-semibold mb-2">Search Results</h3>
+                <p class="text-gray-600 dark:text-gray-400" data-mock="true">Showing results for "smartphone"</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Sort by:</span>
+                <select class="bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue focus:border-transparent">
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Rating</option>
+                    <option>Popularity</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Product Comparison Cards Grid -->
+        <div class="space-y-6">
+            <!-- @MAP: searchResults.map(productGroup => ( -->
+            
+            <!-- Product Group 1: Samsung Galaxy S24 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-6">
+                    <div class="flex flex-col lg:flex-row gap-6">
+                        <!-- Product Image and Basic Info -->
+                        <div class="lg:w-1/4">
+                            <!-- High-quality smartphone product image showing Samsung Galaxy -->
+                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Samsung Galaxy S24" class="w-full h-48 object-cover rounded-lg mb-4">
+                            <h4 class="font-semibold text-lg mb-2" data-bind="product.name">Samsung Galaxy S24 5G</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3" data-bind="product.description">128GB, Phantom Black</p>
+                            
+                            <!-- Quick Actions -->
+                            <div class="flex gap-2">
+                                <button class="flex-1 bg-brand-blue hover:bg-brand-blue-dark text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors" data-event="click:compareProducts">
+                                    <i class="fas fa-plus mr-1"></i>Compare
+                                </button>
+                                <button class="p-2 border border-gray-300 dark:border-slate-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                                    <i class="fas fa-heart text-gray-400"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Platform Comparison -->
+                        <div class="lg:w-3/4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                                
+                                <!-- Amazon Card -->
+                                <div class="border border-gray-200 dark:border-slate-600 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center">
+                                            <i class="fab fa-amazon text-orange-500 text-lg mr-2"></i>
+                                            <span class="font-medium text-sm">Amazon</span>
+                                        </div>
+                                        <span class="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full">Available</span>
+                                    </div>
+                                    
+                                    <!-- Price - Most Prominent -->
+                                    <div class="mb-3">
+                                        <div class="text-2xl font-bold text-green-600 dark:text-green-400" data-bind="amazon.price">₹65,999</div>
+                                        <div class="text-sm text-gray-500 line-through" data-bind="amazon.originalPrice">₹79,999</div>
+                                        <div class="text-sm text-green-600 font-medium" data-bind="amazon.discount">18% off</div>
+                                    </div>
+                                    
+                                    <!-- Shipping - Second Most Prominent -->
+                                    <div class="mb-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded border-l-3 border-blue-400">
+                                        <div class="text-sm font-medium text-blue-700 dark:text-blue-300">
+                                            <i class="fas fa-shipping-fast mr-1"></i>Tomorrow
+                                        </div>
+                                        <div class="text-xs text-blue-600 dark:text-blue-400">Free delivery</div>
+                                    </div>
+                                    
+                                    <!-- Rating -->
+                                    <div class="flex items-center mb-3">
+                                        <div class="flex text-yellow-400 mr-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-sm font-medium" data-bind="amazon.rating">4.3</span>
+                                        <span class="text-xs text-gray-500 ml-1" data-bind="amazon.reviewCount">(2,547)</span>
+                                    </div>
+                                    
+                                    <!-- Quick Features -->
+                                    <div class="text-xs text-gray-600 dark:text-gray-400 mb-3">
+                                        <div>• Prime eligible</div>
+                                        <div>• 1-year warranty</div>
+                                    </div>
+                                    
+                                    <button class="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-sm font-medium transition-colors">
+                                        View on Amazon
+                                    </button>
+                                </div>
+
+                                <!-- Flipkart Card -->
+                                <div class="border border-gray-200 dark:border-slate-600 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-shopping-cart text-blue-500 text-lg mr-2"></i>
+                                            <span class="font-medium text-sm">Flipkart</span>
+                                        </div>
+                                        <span class="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full">Available</span>
+                                    </div>
+                                    
+                                    <!-- Price - Most Prominent -->
+                                    <div class="mb-3">
+                                        <div class="text-2xl font-bold text-green-600 dark:text-green-400" data-bind="flipkart.price">₹64,999</div>
+                                        <div class="text-sm text-gray-500 line-through" data-bind="flipkart.originalPrice">₹79,999</div>
+                                        <div class="text-sm text-green-600 font-medium" data-bind="flipkart.discount">19% off</div>
+                                    </div>
+                                    
+                                    <!-- Shipping - Second Most Prominent -->
+                                    <div class="mb-3 p-2 bg-green-50 dark:bg-green-900/20 rounded border-l-3 border-green-400">
+                                        <div class="text-sm font-medium text-green-700 dark:text-green-300">
+                                            <i class="fas fa-shipping-fast mr-1"></i>Today
+                                        </div>
+                                        <div class="text-xs text-green-600 dark:text-green-400">Plus delivery</div>
+                                    </div>
+                                    
+                                    <!-- Rating -->
+                                    <div class="flex items-center mb-3">
+                                        <div class="flex text-yellow-400 mr-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="text-sm font-medium" data-bind="flipkart.rating">4.4</span>
+                                        <span class="text-xs text-gray-500 ml-1" data-bind="flipkart.reviewCount">(1,892)</span>
+                                    </div>
+                                    
+                                    <!-- Quick Features -->
+                                    <div class="text-xs text-gray-600 dark:text-gray-400 mb-3">
+                                        <div>• Plus member benefits</div>
+                                        <div>• 7-day return</div>
+                                    </div>
+                                    
+                                    <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-medium transition-colors">
+                                        View on Flipkart
+                                    </button>
+                                </div>
+
+                                <!-- Myntra Card -->
+                                <div class="border border-gray-200 dark:border-slate-600 rounded-lg p-4 hover:shadow-md transition-shadow opacity-60">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-tshirt text-pink-500 text-lg mr-2"></i>
+                                            <span class="font-medium text-sm">Myntra</span>
+                                        </div>
+                                        <span class="text-xs bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded-full">Not Available</span>
+                                    </div>
+                                    
+                                    <div class="text-center py-8 text-gray-400">
+                                        <i class="fas fa-times-circle text-2xl mb-2"></i>
+                                        <div class="text-sm">Product not available on this platform</div>
+                                    </div>
+                                </div>
+
+                                <!-- Meesho Card -->
+                                <div class="border border-gray-200 dark:border-slate-600 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-store text-green-500 text-lg mr-2"></i>
+                                            <span class="font-medium text-sm">Meesho</span>
+                                        </div>
+                                        <span class="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full">Available</span>
+                                    </div>
+                                    
+                                    <!-- Price - Most Prominent -->
+                                    <div class="mb-3">
+                                        <div class="text-2xl font-bold text-green-600 dark:text-green-400" data-bind="meesho.price">₹63,999</div>
+                                        <div class="text-sm text-gray-500 line-through" data-bind="meesho.originalPrice">₹79,999</div>
+                                        <div class="text-sm text-green-600 font-medium" data-bind="meesho.discount">20% off</div>
+                                    </div>
+                                    
+                                    <!-- Shipping - Second Most Prominent -->
+                                    <div class="mb-3 p-2 bg-orange-50 dark:bg-orange-900/20 rounded border-l-3 border-orange-400">
+                                        <div class="text-sm font-medium text-orange-700 dark:text-orange-300">
+                                            <i class="fas fa-shipping-fast mr-1"></i>3-5 days
+                                        </div>
+                                        <div class="text-xs text-orange-600 dark:text-orange-400">Standard delivery</div>
+                                    </div>
+                                    
+                                    <!-- Rating -->
+                                    <div class="flex items-center mb-3">
+                                        <div class="flex text-yellow-400 mr-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="text-sm font-medium" data-bind="meesho.rating">4.1</span>
+                                        <span class="text-xs text-gray-500 ml-1" data-bind="meesho.reviewCount">(856)</span>
+                                    </div>
+                                    
+                                    <!-- Quick Features -->
+                                    <div class="text-xs text-gray-600 dark:text-gray-400 mb-3">
+                                        <div>• Cash on delivery</div>
+                                        <div>• Easy returns</div>
+                                    </div>
+                                    
+                                    <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg text-sm font-medium transition-colors">
+                                        View on Meesho
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Expandable Reviews Section -->
+                            <div class="mt-6 border-t border-gray-200 dark:border-slate-600 pt-4">
+                                <button class="flex items-center justify-between w-full text-left" onclick="toggleReviews(this)">
+                                    <h5 class="font-medium text-gray-900 dark:text-gray-100">Customer Reviews Summary</h5>
+                                    <i class="fas fa-chevron-down transition-transform"></i>
+                                </button>
+                                
+                                <div class="reviews-content hidden mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="flex-shrink-0">
+                                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">A</div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="flex items-center mb-1">
+                                                    <span class="font-medium text-sm" data-mock="true">Amazon Customer</span>
+                                                    <div class="flex text-yellow-400 ml-2 text-xs">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                    </div>
+                                                </div>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400" data-mock="true">"Excellent phone with great camera quality. Fast delivery."</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="flex-shrink-0">
+                                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-medium">F</div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="flex items-center mb-1">
+                                                    <span class="font-medium text-sm" data-mock="true">Flipkart User</span>
+                                                    <div class="flex text-yellow-400 ml-2 text-xs">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="far fa-star"></i>
+                                                    </div>
+                                                </div>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400" data-mock="true">"Good value for money. Battery life is impressive."</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Group 2: Apple iPhone 15 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-6">
+                    <div class="flex flex-col lg:flex-row gap-6">
+                        <!-- Product Image and Basic Info -->
+                        <div class="lg:w-1/4">
+                            <!-- Premium iPhone product image showing iPhone 15 -->
+                            <img src="https://pixabay.com/get/g952fbfa0a2958211642f7d157b751908db350c763002c41fc37acf7314cfaeba4f34f1bf4ac5d87a84e1c6e4e0595faac4c97485644e9ed33e350c5b2bccf4ff_1280.jpg" alt="Apple iPhone 15" class="w-full h-48 object-cover rounded-lg mb-4">
+                            <h4 class="font-semibold text-lg mb-2" data-bind="product.name">Apple iPhone 15</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3" data-bind="product.description">128GB, Blue</p>
+                            
+                            <!-- Quick Actions -->
+                            <div class="flex gap-2">
+                                <button class="flex-1 bg-brand-blue hover:bg-brand-blue-dark text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors" data-event="click:compareProducts">
+                                    <i class="fas fa-plus mr-1"></i>Compare
+                                </button>
+                                <button class="p-2 border border-gray-300 dark:border-slate-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                                    <i class="fas fa-heart text-gray-400"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Platform Comparison -->
+                        <div class="lg:w-3/4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                                
+                                <!-- Amazon Card -->
+                                <div class="border border-gray-200 dark:border-slate-600 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center">
+                                            <i class="fab fa-amazon text-orange-500 text-lg mr-2"></i>
+                                            <span class="font-medium text-sm">Amazon</span>
+                                        </div>
+                                        <span class="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full">Available</span>
+                                    </div>
+                                    
+                                    <!-- Price - Most Prominent -->
+                                    <div class="mb-3">
+                                        <div class="text-2xl font-bold text-green-600 dark:text-green-400" data-bind="amazon.price">₹79,900</div>
+                                        <div class="text-sm text-gray-500 line-through" data-bind="amazon.originalPrice">₹79,900</div>
+                                        <div class="text-sm text-blue-600 font-medium" data-bind="amazon.discount">No discount</div>
+                                    </div>
+                                    
+                                    <!-- Shipping - Second Most Prominent -->
+                                    <div class="mb-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded border-l-3 border-blue-400">
+                                        <div class="text-sm font-medium text-blue-700 dark:text-blue-300">
+                                            <i class="fas fa-shipping-fast mr-1"></i>Tomorrow
+                                        </div>
+                                        <div class="text-xs text-blue-600 dark:text-blue-400">Prime delivery</div>
+                                    </div>
+                                    
+                                    <!-- Rating -->
+                                    <div class="flex items-center mb-3">
+                                        <div class="flex text-yellow-400 mr-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-sm font-medium" data-bind="amazon.rating">4.5</span>
+                                        <span class="text-xs text-gray-500 ml-1" data-bind="amazon.reviewCount">(3,421)</span>
+                                    </div>
+                                    
+                                    <!-- Quick Features -->
+                                    <div class="text-xs text-gray-600 dark:text-gray-400 mb-3">
+                                        <div>• Prime eligible</div>
+                                        <div>• Apple warranty</div>
+                                    </div>
+                                    
+                                    <button class="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-sm font-medium transition-colors">
+                                        View on Amazon
+                                    </button>
+                                </div>
+
+                                <!-- Flipkart Card -->
+                                <div class="border border-gray-200 dark:border-slate-600 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-shopping-cart text-blue-500 text-lg mr-2"></i>
+                                            <span class="font-medium text-sm">Flipkart</span>
+                                        </div>
+                                        <span class="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full">Available</span>
+                                    </div>
+                                    
+                                    <!-- Price - Most Prominent -->
+                                    <div class="mb-3">
+                                        <div class="text-2xl font-bold text-green-600 dark:text-green-400" data-bind="flipkart.price">₹78,999</div>
+                                        <div class="text-sm text-gray-500 line-through" data-bind="flipkart.originalPrice">₹79,900</div>
+                                        <div class="text-sm text-green-600 font-medium" data-bind="flipkart.discount">1% off</div>
+                                    </div>
+                                    
+                                    <!-- Shipping - Second Most Prominent -->
+                                    <div class="mb-3 p-2 bg-green-50 dark:bg-green-900/20 rounded border-l-3 border-green-400">
+                                        <div class="text-sm font-medium text-green-700 dark:text-green-300">
+                                            <i class="fas fa-shipping-fast mr-1"></i>Today
+                                        </div>
+                                        <div class="text-xs text-green-600 dark:text-green-400">Plus delivery</div>
+                                    </div>
+                                    
+                                    <!-- Rating -->
+                                    <div class="flex items-center mb-3">
+                                        <div class="flex text-yellow-400 mr-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="text-sm font-medium" data-bind="flipkart.rating">4.6</span>
+                                        <span class="text-xs text-gray-500 ml-1" data-bind="flipkart.reviewCount">(2,156)</span>
+                                    </div>
+                                    
+                                    <!-- Quick Features -->
+                                    <div class="text-xs text-gray-600 dark:text-gray-400 mb-3">
+                                        <div>• Exchange offer</div>
+                                        <div>• 7-day return</div>
+                                    </div>
+                                    
+                                    <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-medium transition-colors">
+                                        View on Flipkart
+                                    </button>
+                                </div>
+
+                                <!-- Myntra Card -->
+                                <div class="border border-gray-200 dark:border-slate-600 rounded-lg p-4 hover:shadow-md transition-shadow opacity-60">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-tshirt text-pink-500 text-lg mr-2"></i>
+                                            <span class="font-medium text-sm">Myntra</span>
+                                        </div>
+                                        <span class="text-xs bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded-full">Not Available</span>
+                                    </div>
+                                    
+                                    <div class="text-center py-8 text-gray-400">
+                                        <i class="fas fa-times-circle text-2xl mb-2"></i>
+                                        <div class="text-sm">Product not available on this platform</div>
+                                    </div>
+                                </div>
+
+                                <!-- Meesho Card -->
+                                <div class="border border-gray-200 dark:border-slate-600 rounded-lg p-4 hover:shadow-md transition-shadow opacity-60">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-store text-green-500 text-lg mr-2"></i>
+                                            <span class="font-medium text-sm">Meesho</span>
+                                        </div>
+                                        <span class="text-xs bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded-full">Not Available</span>
+                                    </div>
+                                    
+                                    <div class="text-center py-8 text-gray-400">
+                                        <i class="fas fa-times-circle text-2xl mb-2"></i>
+                                        <div class="text-sm">Product not available on this platform</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- @END_MAP )) -->
+        </div>
+
+        <!-- Load More Button -->
+        <div class="text-center mt-8">
+            <button class="bg-brand-blue hover:bg-brand-blue-dark text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                Load More Results
+            </button>
+        </div>
+    </main>
+    <!-- @END_COMPONENT: ProductGrid -->
+
+    <!-- @COMPONENT: ComparisonModal [Side-by-side detailed comparison] -->
+    <div id="comparisonModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white dark:bg-slate-800 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6 border-b border-gray-200 dark:border-slate-700">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-2xl font-bold">Detailed Comparison</h3>
+                        <button onclick="closeComparisonModal()" class="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Placeholder for detailed comparison content -->
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-lg" data-mock="true">Samsung Galaxy S24 5G</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between py-2 border-b border-gray-200 dark:border-slate-600">
+                                    <span class="text-gray-600 dark:text-gray-400">Best Price</span>
+                                    <span class="font-semibold" data-mock="true">₹63,999 (Meesho)</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-200 dark:border-slate-600">
+                                    <span class="text-gray-600 dark:text-gray-400">Fastest Delivery</span>
+                                    <span class="font-semibold" data-mock="true">Today (Flipkart)</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-200 dark:border-slate-600">
+                                    <span class="text-gray-600 dark:text-gray-400">Highest Rating</span>
+                                    <span class="font-semibold" data-mock="true">4.4/5 (Flipkart)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-lg" data-mock="true">Apple iPhone 15</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between py-2 border-b border-gray-200 dark:border-slate-600">
+                                    <span class="text-gray-600 dark:text-gray-400">Best Price</span>
+                                    <span class="font-semibold" data-mock="true">₹78,999 (Flipkart)</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-200 dark:border-slate-600">
+                                    <span class="text-gray-600 dark:text-gray-400">Fastest Delivery</span>
+                                    <span class="font-semibold" data-mock="true">Today (Flipkart)</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-200 dark:border-slate-600">
+                                    <span class="text-gray-600 dark:text-gray-400">Highest Rating</span>
+                                    <span class="font-semibold" data-mock="true">4.6/5 (Flipkart)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: ComparisonModal -->
+
+    <!-- @COMPONENT: Footer [Additional information and links] -->
+    <footer class="bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 mt-16">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-balance-scale text-xl text-brand-blue"></i>
+                        <h3 class="text-lg font-bold text-brand-blue">ShopCompare</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Compare products across all major e-commerce platforms and find the best deals.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Platforms</h4>
+                    <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Amazon</a></li>
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Flipkart</a></li>
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Myntra</a></li>
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Meesho</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Features</h4>
+                    <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Price Comparison</a></li>
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Reviews Analysis</a></li>
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Shipping Comparison</a></li>
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Deal Alerts</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-blue transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 dark:border-slate-700 mt-8 pt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+                <p>&copy; 2024 ShopCompare. All rights reserved. | Made with ❤️ for smart shoppers</p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        // @STATE: isDarkMode:boolean = false
+        // @STATE: activeFilters:array = ['all']
+        // @STATE: searchQuery:string = ''
+        // @STATE: selectedProducts:array = []
+
+        (function() {
+            // Theme Toggle Functionality
+            const themeToggle = document.getElementById('themeToggle');
+            const html = document.documentElement;
+            
+            // Check for saved theme preference or default to 'light'
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.classList.toggle('dark', savedTheme === 'dark');
+            
+            themeToggle.addEventListener('click', () => {
+                const isDark = html.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+
+            // Platform Filter Functionality
+            const platformFilters = document.querySelectorAll('.platform-filter');
+            
+            platformFilters.forEach(filter => {
+                filter.addEventListener('click', () => {
+                    // Remove active class from all filters
+                    platformFilters.forEach(f => {
+                        f.classList.remove('active', 'bg-brand-blue', 'text-white');
+                        f.classList.add('bg-gray-200', 'dark:bg-slate-700', 'text-gray-700', 'dark:text-gray-300');
+                    });
+                    
+                    // Add active class to clicked filter
+                    filter.classList.add('active', 'bg-brand-blue', 'text-white');
+                    filter.classList.remove('bg-gray-200', 'dark:bg-slate-700', 'text-gray-700', 'dark:text-gray-300');
+                    
+                    const platform = filter.dataset.platform;
+                    // TODO: Implement platform filtering logic
+                    console.log('Filter by platform:', platform);
+                });
+            });
+
+            // Search Functionality
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        // TODO: Implement search functionality
+                        console.log('Search for:', query);
+                    }
+                }
+            });
+        })();
+
+        // Reviews Toggle Function
+        function toggleReviews(button) {
+            const reviewsContent = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            if (reviewsContent.classList.contains('hidden')) {
+                reviewsContent.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                reviewsContent.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Comparison Modal Functions
+        function openComparisonModal() {
+            document.getElementById('comparisonModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeComparisonModal() {
+            document.getElementById('comparisonModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Compare Products Function
+        function compareProducts(productId) {
+            // TODO: Implement product comparison logic
+            console.log('Add to comparison:', productId);
+            openComparisonModal();
+        }
+
+        // @FUNCTIONALITY: Add click handlers for compare buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const compareButtons = document.querySelectorAll('[data-event*="compareProducts"]');
+            compareButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    compareProducts('sample-product-id');
+                });
+            });
+        });
+
+        // @FUNCTIONALITY: Implement product search across platforms
+        // TODO: Add API integration for real-time price comparison
+        // TODO: Implement user preferences and saved comparisons
+        // TODO: Add notification system for price drops
+        // TODO: Implement advanced filtering options
+    </script>
+</body>
+</html>

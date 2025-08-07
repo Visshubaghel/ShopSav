@@ -70,10 +70,7 @@ This project is configured for automatic deployment to GitHub Pages using GitHub
    - Navigate to "Pages" in the left sidebar
    - Under "Source", select "GitHub Actions"
 
-3. **Update Base URL** (if needed):
-   - If your repository name is different from `product-comparison-platform`, update the `base` URL in the deployment configuration
-
-4. **Push to Main Branch**:
+3. **Push to Main Branch**:
    - Any push to the `main` branch will automatically trigger the deployment
    - The site will be available at: `https://yourusername.github.io/product-comparison-platform/`
 

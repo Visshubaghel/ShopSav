@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShopCompare - Product Price Comparison Platform</title>
+    <meta name="description" content="Compare product prices across Amazon, Flipkart, Myntra, and Meesho. Find the best deals, fastest delivery, and highest ratings all in one place." />
+    <meta name="keywords" content="product comparison, price comparison, e-commerce, Amazon, Flipkart, Myntra, Meesho, online shopping" />
+    
+    <!-- Open Graph tags for social media sharing -->
+    <meta property="og:title" content="ShopCompare - Product Price Comparison Platform" />
+    <meta property="og:description" content="Compare product prices across Amazon, Flipkart, Myntra, and Meesho. Find the best deals, fastest delivery, and highest ratings all in one place." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourusername.github.io/product-comparison-platform/" />
+    <meta property="og:image" content="https://yourusername.github.io/product-comparison-platform/og-image.png" />
+    
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ShopCompare - Product Price Comparison Platform" />
+    <meta name="twitter:description" content="Compare product prices across Amazon, Flipkart, Myntra, and Meesho. Find the best deals, fastest delivery, and highest ratings all in one place." />
+    <meta name="twitter:image" content="https://yourusername.github.io/product-comparison-platform/og-image.png" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SPA GitHub Pages redirect script -->
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // https://github.com/rafgraph/spa-github-pages
+      // This script checks for a redirect and converts it back to proper routing
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/client/src/main.tsx"></script>
+  </body>
+</html>

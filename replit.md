@@ -32,7 +32,7 @@ Preferred communication style: Simple, everyday language.
 
 **Development Setup**: Custom Vite integration for seamless development experience with hot module replacement and error handling.
 
-**Storage Layer**: Currently implements an in-memory storage solution (MemStorage) with a defined interface (IStorage) that can be easily replaced with database implementations.
+**Storage Layer**: Now uses static data stored in client/src/data/products.ts for GitHub Pages deployment. Previously implemented in-memory storage solution (MemStorage) for full-stack development.
 
 **API Design**: RESTful endpoints following consistent patterns:
 - GET /api/products/search - Search products with optional platform filtering

@@ -1,69 +1,41 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { SearchSection } from "@/components/product/search-section";
 import { ProductGrid } from "@/components/product/product-grid";
 import { ProductWithListings, Platform } from "@shared/schema";
-import { useToast } from "@/hooks/use-toast";
+import { searchProducts } from "@/data/products";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("smartphone");
   const [activePlatform, setActivePlatform] = useState<Platform | "all">("all");
-  const [hasSearched, setHasSearched] = useState(false);
-  const { toast } = useToast();
+  const [products, setProducts] = useState<ProductWithListings[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { data: products = [], isLoading, error, refetch } = useQuery<ProductWithListings[]>({
-    queryKey: ["/api/products/search", searchQuery, activePlatform === "all" ? undefined : activePlatform],
-    queryFn: async ({ queryKey }) => {
-      const [_, query, platform] = queryKey;
-      const params = new URLSearchParams();
-      
-      if (query && typeof query === "string") {
-        params.append("q", query);
-      }
-      
-      if (platform && typeof platform === "string") {
-        params.append("platform", platform);
-      }
-
-      const response = await fetch(`/api/products/search?${params}`);
-      if (!response.ok) {
-        throw new Error("Failed to search products");
-      }
-      
-      return response.json();
-    },
-    enabled: false, // Don't fetch automatically
-  });
+  const performSearch = (query: string, platform: Platform | "all" = "all") => {
+    setIsLoading(true);
+    // Simulate loading delay for better UX
+    setTimeout(() => {
+      const results = searchProducts(query, platform === "all" ? undefined : platform);
+      setProducts(results);
+      setIsLoading(false);
+    }, 300);
+  };
 
   // Initial search for smartphones
   useEffect(() => {
-    if (!hasSearched) {
-      refetch();
-      setHasSearched(true);
-    }
-  }, [refetch, hasSearched]);
+    performSearch(searchQuery);
+  }, []);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    refetch();
+    performSearch(query, activePlatform);
   };
 
   const handlePlatformFilter = (platform: Platform | "all") => {
     setActivePlatform(platform);
-    refetch();
+    performSearch(searchQuery, platform);
   };
-
-  useEffect(() => {
-    if (error) {
-      toast({
-        variant: "destructive",
-        title: "Search Error",
-        description: "Failed to search products. Please try again.",
-      });
-    }
-  }, [error, toast]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">

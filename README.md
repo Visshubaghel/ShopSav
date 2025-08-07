@@ -76,16 +76,31 @@ This project is configured for automatic deployment to GitHub Pages using GitHub
 
 ### Manual Deployment
 
-If you prefer manual deployment:
+If you prefer manual deployment or need to fix path issues:
 
 ```bash
-# Build the project
+# Option 1: Use the provided script
+./deploy-gh-pages.sh
+
+# Option 2: Manual steps
 npm run build
+cp 404.html dist/public/
+# Fix asset paths for GitHub Pages
+sed -i 's|="/assets/|="./assets/|g' dist/public/index.html
+sed -i 's|src="/assets/|src="./assets/|g' dist/public/index.html
 
 # Deploy to GitHub Pages (using gh-pages package)
 npm install -g gh-pages
-gh-pages -d dist
+gh-pages -d dist/public
 ```
+
+### Troubleshooting Blank Page
+
+If you see a blank page on GitHub Pages, it's likely due to incorrect asset paths. The GitHub Actions workflow automatically fixes this, but for manual deployment:
+
+1. Run the build script: `./deploy-gh-pages.sh`
+2. Or manually fix paths in `dist/public/index.html` to use relative paths (`./assets/` instead of `/assets/`)
+3. Ensure your repository has GitHub Pages enabled with "GitHub Actions" as the source
 
 ## Project Structure
 
